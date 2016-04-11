@@ -1,4 +1,8 @@
-Michelle Solon Sophmore EDP and Applied Computing major Creative Codes 3701
+#CreativeCodes
+
+Michelle Solon 
+\nSophmore EDP and Applied Computing major 
+\nCreative Codes 3701
 
 Exercise 1 (Face): Uses primarily the draw function to make a face with 10 different graphical elements. No addons required
 
