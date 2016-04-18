@@ -9,6 +9,8 @@ class Turtle {
 	double myDirection;
 	bool penDown;
 
+	ofMesh mesh;
+
 public:
 	void setValues(int, int, double);
 	void moveForward();
@@ -16,9 +18,14 @@ public:
 	void turnLeft(double);
 	void turnRight(double);
 	void setPen(bool);
+	double getMyX();
+	double getMyY();
+	double getMyDir();
+	ofMesh getMesh();
 	string dragonCurve(int);
 	string reverse(string);
 	void command(string);
+
 };
 
 class ofApp : public ofBaseApp {
@@ -41,6 +48,8 @@ public:
 	void gotMessage(ofMessage msg);
 
 	Turtle bob;
+
+
 
 
 };

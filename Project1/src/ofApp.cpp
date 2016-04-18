@@ -1,80 +1,86 @@
 #include "ofApp.h"
+#include<thread>
 
 
 //--------------------------------------------------------------
-void ofApp::setup(){
+void ofApp::setup() {
 
-	
+
 	bob.setValues(0, 0, 30);
 
-	
-}
 
 
-//--------------------------------------------------------------
-void ofApp::update(){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::draw(){
 	bob.command(bob.dragonCurve(20));
-}
-
-//--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::keyReleased(int key){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
 
 }
 
 
+//--------------------------------------------------------------
+void ofApp::update() {
+
+}
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::draw() {
+
+	bob.getMesh().draw();
+
+}
+
+//--------------------------------------------------------------
+void ofApp::keyPressed(int key) {
+
+}
+
+//--------------------------------------------------------------
+void ofApp::keyReleased(int key) {
+
+}
+
+//--------------------------------------------------------------
+void ofApp::mouseMoved(int x, int y) {
+
+}
+
+//--------------------------------------------------------------
+void ofApp::mouseDragged(int x, int y, int button) {
+
+}
+
+//--------------------------------------------------------------
+void ofApp::mousePressed(int x, int y, int button) {
+
+}
+
+//--------------------------------------------------------------
+void ofApp::mouseReleased(int x, int y, int button) {
+
+}
+
+//--------------------------------------------------------------
+void ofApp::mouseEntered(int x, int y) {
+
+}
+
+//--------------------------------------------------------------
+void ofApp::mouseExited(int x, int y) {
+
+}
+
+//--------------------------------------------------------------
+void ofApp::windowResized(int w, int h) {
+
+}
+
+//--------------------------------------------------------------
+void ofApp::gotMessage(ofMessage msg) {
+
+}
+
+
+
+//--------------------------------------------------------------
+void ofApp::dragEvent(ofDragInfo dragInfo) {
 
 }
 
@@ -83,6 +89,9 @@ void Turtle::setValues(int x, int y, double dir) {
 	myY = y;
 	myDirection = dir;
 	penDown = true;
+
+
+
 }
 
 void Turtle::moveForward() {
@@ -93,8 +102,28 @@ void Turtle::moveForward() {
 	myY += sin(myDirection);
 
 	if (penDown) {
-		ofDrawLine(tempx, tempy, myX, myY);
+		//ofDrawLine(tempx, tempy, myX, myY);
+
+		for (int y = 0; y < ofGetHeight(); y++) {
+			for (int x = 0; x < ofGetWidth(); x++) {
+				mesh.addVertex(ofPoint(getMyX(), getMyY(), 0)); // make a new vertex
+				mesh.addColor(ofFloatColor(0, 0, 0));  // add a color at that vertex
+			}
+		}
+
+		for (int y = 0; y< ofGetHeight() - 1; y++) {
+			for (int x = 0; x< ofGetWidth() - 1; x++) {
+				mesh.addIndex(x + y*ofGetWidth());               // 0
+				mesh.addIndex((x + 1) + y*ofGetWidth());           // 1
+				mesh.addIndex(x + (y + 1)*ofGetWidth());           // 10
+
+				mesh.addIndex((x + 1) + y*ofGetWidth());           // 1
+				mesh.addIndex((x + 1) + (y + 1)*ofGetWidth());       // 11
+				mesh.addIndex(x + (y + 1)*ofGetWidth());           // 10
+			}
+		}
 	}
+
 }
 
 void Turtle::moveBackward() {
@@ -181,4 +210,20 @@ void Turtle::command(string program) {
 			break;//do Nothing
 		}
 	}
+}
+
+double Turtle::getMyDir() {
+	return myDirection;
+}
+
+double Turtle::getMyX() {
+	return myX;
+}
+
+double Turtle::getMyY() {
+	return myY;
+}
+
+ofMesh Turtle::getMesh() {
+	return mesh;
 }
