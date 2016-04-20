@@ -49,6 +49,7 @@ public:
 
 	Turtle bob;
 
+	double r, g, b;
 
 
 

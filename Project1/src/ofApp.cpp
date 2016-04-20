@@ -1,5 +1,5 @@
 #include "ofApp.h"
-#include<thread>
+#include <stdlib.h>
 
 
 //--------------------------------------------------------------
@@ -8,9 +8,9 @@ void ofApp::setup() {
 
 	bob.setValues(0, 0, 30);
 
+	ofSetBackgroundColor(ofColor::black);
 
-
-	bob.command(bob.dragonCurve(20));
+	
 
 }
 
@@ -18,12 +18,22 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
 
+
+	r = rand() % 256;         
+	g = rand() % 256;     
+	b = rand() % 256;    
+
+	ofSetColor(r, g, b);
+
+
+	
+
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
 
-	bob.getMesh().draw();
+	bob.command(bob.dragonCurve(20));
 
 }
 
@@ -102,11 +112,12 @@ void Turtle::moveForward() {
 	myY += sin(myDirection);
 
 	if (penDown) {
-		//ofDrawLine(tempx, tempy, myX, myY);
+		ofDrawLine(tempx, tempy, myX, myY);
 
+		/*
 		for (int y = 0; y < ofGetHeight(); y++) {
 			for (int x = 0; x < ofGetWidth(); x++) {
-				mesh.addVertex(ofPoint(getMyX(), getMyY(), 0)); // make a new vertex
+				mesh.addVertex(ofPoint(x, y, 0)); // make a new vertex
 				mesh.addColor(ofFloatColor(0, 0, 0));  // add a color at that vertex
 			}
 		}
@@ -121,7 +132,7 @@ void Turtle::moveForward() {
 				mesh.addIndex((x + 1) + (y + 1)*ofGetWidth());       // 11
 				mesh.addIndex(x + (y + 1)*ofGetWidth());           // 10
 			}
-		}
+		}*/
 	}
 
 }
