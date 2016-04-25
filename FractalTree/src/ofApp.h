@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxCsv.h"
 
 class ofApp : public ofBaseApp{
 
@@ -24,7 +25,10 @@ class ofApp : public ofBaseApp{
 		void recursiveTree(float level);
 		void branch(float len);
 
-		int treeX, treeY, r, g, b;
-		float thetha, usableThetha;
+		int treeX, treeY, r, g, b, randNum;
+		float thetha, temp;
 		ofMesh mesh;
+
+		
+		ofxCsv csv;
 };
