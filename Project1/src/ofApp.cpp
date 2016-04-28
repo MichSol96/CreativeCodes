@@ -1,240 +1,119 @@
 #include "ofApp.h"
-#include <stdlib.h>
+#include "stdlib.h"
 
 
 //--------------------------------------------------------------
-void ofApp::setup() {
-
-
-	bob.setValues(0, 0, 30);
-
+void ofApp::setup(){
+	ofSetBackgroundAuto(false);
+	csv.load("4-18-16.csv");
 	ofSetBackgroundColor(ofColor::black);
-
+	ofSetLineWidth(3);
 	
+	len = 500;
 
-}
+	//creates a random value between 0 and 255 for r, g and b
+	r = rand() % 256;
+	g = rand() % 256;
+	b = rand() % 256;
 
-
-//--------------------------------------------------------------
-void ofApp::update() {
-
-
-	r = rand() % 256;         
-	g = rand() % 256;     
-	b = rand() % 256;    
-
+	//sets the color based on the current r, g, b value
 	ofSetColor(r, g, b);
 
+	randNum = rand() % csv.getNumRows(); //get a random row from the csv file
+	ofxCsvRow& row = csv.getRow(randNum); // grab that random row 
+	temp = row.getInt(randNum); //create temp based on randNum 
+	thetha = (temp * PI) - (r * g + b);
+}
 
+//--------------------------------------------------------------
+void ofApp::update(){
+	
 	
 
-}
-
-//--------------------------------------------------------------
-void ofApp::draw() {
-
-	bob.command(bob.dragonCurve(20));
+	len *= 0.66;
 
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key) {
+void ofApp::draw(){
+
+	ofTranslate(ofGetWidth() / 2, ofGetHeight());
+	ofDrawLine(0, 0, 0, -len);
+	ofTranslate(0, -len);
+
+	//ofSetFrameRate(10);
+	//ofTranslate(treeX, treeY);
+
+	ofDrawLine(0, 0, 0, -len);
+	ofTranslate(0, -len);
+
+	//Each branch’s length shrinks by 2/3rds
+	
+		ofPushMatrix();
+		ofRotate(thetha);
+		ofDrawLine(0, 0, 0, -len);
+		ofTranslate(0, -len);
+		ofPopMatrix();
+
+		ofPushMatrix();
+		ofRotate(-(thetha));
+		ofDrawLine(0, 0, 0, -len);
+		ofTranslate(0, -len);
+		ofPopMatrix();
+	
+}
+
+//--------------------------------------------------------------
+void ofApp::keyPressed(int key){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key) {
+void ofApp::keyReleased(int key){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y) {
+void ofApp::mouseMoved(int x, int y ){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button) {
+void ofApp::mouseDragged(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button) {
+void ofApp::mousePressed(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button) {
+void ofApp::mouseReleased(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y) {
+void ofApp::mouseEntered(int x, int y){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y) {
+void ofApp::mouseExited(int x, int y){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::windowResized(int w, int h) {
+void ofApp::windowResized(int w, int h){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg) {
+void ofApp::gotMessage(ofMessage msg){
 
 }
-
-
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo) {
+void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
-}
-
-void Turtle::setValues(int x, int y, double dir) {
-	myX = x;
-	myY = y;
-	myDirection = dir;
-	penDown = true;
-
-
-
-}
-
-void Turtle::moveForward() {
-	double tempx = myX;
-	double tempy = myY;
-
-	myX += cos(myDirection);
-	myY += sin(myDirection);
-
-	if (penDown) {
-		ofDrawLine(tempx, tempy, myX, myY);
-
-		/*
-		for (int y = 0; y < ofGetHeight(); y++) {
-			for (int x = 0; x < ofGetWidth(); x++) {
-				mesh.addVertex(ofPoint(x, y, 0)); // make a new vertex
-				mesh.addColor(ofFloatColor(0, 0, 0));  // add a color at that vertex
-			}
-		}
-
-		for (int y = 0; y< ofGetHeight() - 1; y++) {
-			for (int x = 0; x< ofGetWidth() - 1; x++) {
-				mesh.addIndex(x + y*ofGetWidth());               // 0
-				mesh.addIndex((x + 1) + y*ofGetWidth());           // 1
-				mesh.addIndex(x + (y + 1)*ofGetWidth());           // 10
-
-				mesh.addIndex((x + 1) + y*ofGetWidth());           // 1
-				mesh.addIndex((x + 1) + (y + 1)*ofGetWidth());       // 11
-				mesh.addIndex(x + (y + 1)*ofGetWidth());           // 10
-			}
-		}*/
-	}
-
-}
-
-void Turtle::moveBackward() {
-	double tempx = myX;
-	double tempy = myY;
-
-	myX -= cos(myDirection);
-	myY -= sin(myDirection);
-
-	if (penDown) {
-		ofDrawLine(tempx, tempy, myX, myY);
-
-	}
-}
-
-void Turtle::turnLeft(double angle) {
-	myDirection += angle;
-	if (myDirection < 0.0) {
-		myDirection += 2.0 * PI;
-	}
-	if (myDirection > 2.0) {
-		myDirection -= 2.0 * PI;
-	}
-}
-
-void Turtle::turnRight(double angle) {
-	myDirection -= angle;
-	if (myDirection < 0) {
-		myDirection += 2 * PI;
-
-	}
-	if (myDirection > 2.0) {
-		myDirection -= 2.0 * PI;
-	}
-}
-
-void Turtle::setPen(bool value) {
-	penDown = value;
-}
-
-string Turtle::dragonCurve(int level) {
-	if (level == 0) {
-		return "FRF";
-	}
-	else {
-		string temp = dragonCurve(level - 1);
-		return temp + "R" + reverse(temp);
-	}
-}
-
-string Turtle::reverse(string aString) {
-	string result = "";
-	for (int i = aString.length() - 1; i >= 0; i--) {
-
-		switch (aString.at(i)) {
-
-		case 'L': result += 'R';
-			break;
-		case 'R': result += 'L';
-			break;
-		default: result += aString.at(i);
-		}
-	}
-	return result;
-}
-
-void Turtle::command(string program) {
-
-	for (int i = 0; i < program.length(); i++) {
-		switch (program.at(i)) {
-		case 'F': moveForward();
-			break;
-		case 'B': moveBackward();
-			break;
-		case 'L': turnLeft(PI / 2);
-			break;
-		case 'R': turnRight(PI / 2);
-			break;
-		case 'U': setPen(false);
-			break;
-		case 'D': setPen(true);
-			break;
-		default:
-			break;//do Nothing
-		}
-	}
-}
-
-double Turtle::getMyDir() {
-	return myDirection;
-}
-
-double Turtle::getMyX() {
-	return myX;
-}
-
-double Turtle::getMyY() {
-	return myY;
-}
-
-ofMesh Turtle::getMesh() {
-	return mesh;
 }
