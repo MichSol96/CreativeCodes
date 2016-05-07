@@ -1,52 +1,50 @@
 #include "ofApp.h"
-
+using namespace ofxCv;
 //--------------------------------------------------------------
 void ofApp::setup(){
 
-	    vidGrabber.setVerbose(true);
-	    vidGrabber.setup(1024, 768);
-		
+	    tracker.setup();
+	    videoGrab.setup(1024, 768);
 
-
-		colorImg.allocate(1024, 768);
+		colorImage.allocate(1024, 768);
 		grayImage.allocate(1024, 768);
 		grayBg.allocate(1024, 768);
-		grayDiff.allocate(1024, 768);
+		diff.allocate(1024, 768);
 
-		bLearnBakground = true;
+		learnBg = true;
 		threshold = 50;
 
 		ofBackground(0);
+
+		eye1.load("eye1.jpg");
+		eye2.load("eye2.JPG");
+		eye1.resize(50, 50);
+		eye2.resize(50, 50);
 
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 
-	bool bNewFrame = false;
-	vidGrabber.update();
-	bNewFrame = vidGrabber.isFrameNew();
+	bool camFrame = false;
+	videoGrab.update();
+	camFrame = videoGrab.isFrameNew();
    
 
-		if (bNewFrame) {
-
-            
-			colorImg.setFromPixels(vidGrabber.getPixels());
-            
-
-			grayImage = colorImg;
-			if (bLearnBakground == true) {
-				grayBg = grayImage;		// the = sign copys the pixels from grayImage into grayBg (operator overloading)
-				bLearnBakground = false;
+		if (camFrame) {
+			tracker.update(toCv(videoGrab));
+			colorImage.setFromPixels(videoGrab.getPixels());
+         
+			grayImage = colorImage;
+			if (learnBg == true) {
+				grayBg = grayImage;		
+				learnBg = false;
 			}
 
-			// take the abs value of the difference between background and incoming and then threshold:
-			grayDiff.absDiff(grayBg, grayImage);
-			grayDiff.threshold(threshold);
+			diff.absDiff(grayBg, grayImage);
+			diff.threshold(threshold);
 
-			// find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
-			// also, find holes is set to true so we will get interior contours as well....
-			contourFinder.findContours(grayDiff, 20, (1024 * 768) / 3, 10, true);	// find 
+			contours.findContours(diff, 0, (1024 * 768) / 3, 10, true);	// find 
 		}
 
 }
@@ -54,16 +52,20 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	
-	//grayDiff.draw(20, 20);
+	//diff.draw(0, 0);
+	
+	//draw the eyes in
+	ofPolyline leftEye = tracker.getImageFeature(ofxFaceTracker::LEFT_EYE);
+	eye1.draw(leftEye.getCentroid2D());
+	ofPolyline rightEye = tracker.getImageFeature(ofxFaceTracker::RIGHT_EYE);
+	eye2.draw(rightEye.getCentroid2D());
 
-	// then draw the contours:
-
+	ofSetLineWidth(2);
+	// then draw the contours (outline):
 	ofFill();
-	
 	ofSetColor(ofColor::white);
+	contours.draw();
 
-	
-	contourFinder.draw();
 
 	
 }
@@ -72,7 +74,7 @@ void ofApp::draw(){
 void ofApp::keyPressed(int key){
 	switch (key) {
 	case ' ':
-		bLearnBakground = true;
+		learnBg = true;
 		break;
 	}
 }

@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxOpenCv.h"
-
+#include "ofxFaceTracker.h"
 #define _USE_LIVE_VIDEO	
 class ofApp : public ofBaseApp{
 
@@ -24,17 +24,20 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
        
-		ofVideoGrabber vidGrabber;
+		ofVideoGrabber videoGrab;
 
-		ofxCvColorImage	colorImg;
+		ofxCvColorImage	colorImage;
 
 		ofxCvGrayscaleImage grayImage;
 		ofxCvGrayscaleImage grayBg;
-		ofxCvGrayscaleImage grayDiff;
+		ofxCvGrayscaleImage diff;
+		ofxFaceTracker tracker;
+		ofxCvContourFinder contours;
 
-		ofxCvContourFinder contourFinder;
+		ofImage eye1;
+		ofImage eye2;
 
 		int threshold;
-		bool bLearnBakground;
+		bool learnBg;
 		
 };
