@@ -16,8 +16,8 @@ void ofApp::setup(){
 
 		ofBackground(0);
 
-		eye1.load("eye1.jpg");
-		eye2.load("eye2.JPG");
+		eye1.load("eye1.png");
+		eye2.load("eye2.png");
 		eye1.resize(50, 50);
 		eye2.resize(50, 50);
 
@@ -56,11 +56,11 @@ void ofApp::draw(){
 	
 	//draw the eyes in
 	ofPolyline leftEye = tracker.getImageFeature(ofxFaceTracker::LEFT_EYE);
-	eye1.draw(leftEye.getCentroid2D());
+	eye1.draw(leftEye.getCentroid2D() - 5);
 	ofPolyline rightEye = tracker.getImageFeature(ofxFaceTracker::RIGHT_EYE);
-	eye2.draw(rightEye.getCentroid2D());
+	eye2.draw(rightEye.getCentroid2D() - 5);
 
-	ofSetLineWidth(2);
+	//ofSetLineWidth(2);
 	// then draw the contours (outline):
 	ofFill();
 	ofSetColor(ofColor::white);
