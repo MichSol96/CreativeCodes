@@ -2,9 +2,10 @@
 
 #include "ofMain.h"
 #include "ofxOpenCv.h"
+#include "ofxCV.h"
 #include "ofxFaceTracker.h"
 #include "ofxFaceTrackerThreaded.h"
-//#include "ofxKinectV2OSC.h"
+#include "ofxKinectV2OSC.h"
 #define _USE_LIVE_VIDEO	
 class ofApp : public ofBaseApp {
 
@@ -25,34 +26,53 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
-
+	
+	
 	ofVideoGrabber videoGrab;
-
-	ofxCvColorImage	colorImage;
-
-	ofxCvGrayscaleImage grayImage;
-	ofxCvGrayscaleImage grayBg;
-	ofxCvGrayscaleImage diff;
+	
 	ofxFaceTrackerThreaded tracker;
-	ofxCvContourFinder contours;
+
+	//vectors of face images
+	vector<string> leftEye;
+	vector<string> rightEye;
+	vector<string> leftEyebrow;
+	vector<string> rightEyebrow;
+	vector<string> mouth;
+	vector<string> nose;
+
+	//vectors of left side of the body images
+	vector<string> leftArm;
+	vector<string> leftLeg;
+
+	vector<string> torso;
+
+	//vector of right side of the body images
+	vector<string> rightArm;
+	vector<string> rightLeg;
+
 
 	ofImage eye1;
 	ofImage eye2;
-	ofImage mouthOpen;
+	ofImage eyebrow1;
+	ofImage eyebrow2;
 	ofImage mouthClosed;
-	ofImage mouthSmile;
-	ofImage nose;
+	ofImage nose1; 
 
-	int threshold;
-	bool learnBg;
+	ofImage leg1;
+	ofImage leg2;
+	
 
-	int previewWidth = 640;
-	int previewHeight = 480;
+	ofImage arm1;
+	ofImage arm2;
+
+	ofImage torso1;
 
 	
-	/*ofxKinectV2OSC kinect;
+	ofxKinectV2OSC kinect;
 	Skeleton* skeleton;
 	vector<Skeleton>* skeletons;
 	ofTrueTypeFont smallFont;
-	BodyRenderer renderer;*/
+	BodyRenderer renderer;
+
+	
 };
